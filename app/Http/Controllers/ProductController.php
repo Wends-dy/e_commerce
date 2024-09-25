@@ -19,7 +19,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Validate image
         ]);
     
         // Create a new product with validated data
@@ -61,7 +61,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
         ]);
 
-        return redirect()->back()->with('status','Categorie updated');
+        return redirect()->back()->with('status','Product updated');
     }
 
     public function destroy(int $id)
@@ -73,7 +73,7 @@ class ProductController extends Controller
         $product->delete();
 
         // Redirect back with a success message
-        return redirect('products/create')->with('status', 'Product deleted successfully!');
+        return redirect('products')->with('status', 'Product deleted successfully!');
     }
 
     public function search(Request $request)

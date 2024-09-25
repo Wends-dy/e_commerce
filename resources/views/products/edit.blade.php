@@ -50,7 +50,7 @@
 
         <!-- Submit button -->
         <button type="submit">Update</button>
-        <a href="{{ url('products/' . $product->id . '/delete') }}" onclick="return confirm('Are you sure you want to delete this product?');" style="color: red;">Delete</a>
+        {{-- <a href="{{ url('products/' . $product->id . '/delete') }}" onclick="return confirm('Are you sure you want to delete this product?');" style="color: red;">Delete</a> --}}
     </form>
     @if(session('status'))
     <div class="message success">

@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    //Migration is created here creating table products with it's field
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id(); // Creates an auto-incrementing UNSIGNED BIGINT (primary key)
-            $table->string('product_name'); // String column for the product name
-            $table->text('description'); // Text column for detailed description
-            $table->decimal('price', 8, 2); // Decimal column with precision 8 and scale 2 for price
-            $table->integer('stock'); // Integer column for stock quantity
-            $table->timestamps(); // Creates 'created_at' and 'updated_at' timestamp columns
+            $table->id(); 
+            $table->string('product_name'); 
+            $table->text('description');
+            $table->decimal('price', 8, 2); 
+            $table->integer('stock');
+            $table->timestamps(); 
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');

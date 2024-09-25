@@ -32,32 +32,38 @@
     @else
     </div>
     <div class="row">
-        @foreach ($products as $product)
+      @foreach ($products as $product)
         <div class="col-sm-6 col-md-4 col-lg-3">
         
           <div class="box">
-              <div class="img-box">
-                <img src="{{ asset('storage/images/cbr.jpg') }}" alt="Logo">
-              </div>
-              <div class="detail-box">
-                <h6>
-                  {{ $product->product_name }}
-                </h6>
-                <h6>
-                  Price
-                  <span>
-                    {{ $product->price }}
-                  </span>
-                </h6>
-              </div>
-              <p class="mt-2 mb-0"> <!-- Added margin-top to separate from price -->
-                {{ $product->description }} <!-- Assuming you have a description field in your product model -->
-              </p>
-              
+            <div class="img-box">
+              <img src="{{ asset('storage/'. $product->image) }}" alt="Logo">
+            </div>
+            <div class="detail-box">
+              <h6>
+                {{ $product->product_name }}
+              </h6>
+              <h6>
+                Price
+                <span>
+                  {{ $product->price }}
+                </span>
+              </h6>
+            </div>
+            <p class="mt-2 mb-0"> <!-- Added margin-top to separate from price -->
+              {{ $product->description }} <!-- Assuming you have a description field in your product model -->
+            </p>
+            
+            <a class="text-decoration-none" href="{{ url('products/' . $product->id . '/edit') }}" style="color: rgb(70, 216, 12);">Edit</a>
+            <form action="{{ url('products/' . $product->id .'/delete') }}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+              @csrf
+              @method('DELETE')
+              <button class="btn btn-danger" type="submit" style="color: red; background: none; border: none; cursor: pointer;">Delete</button>
+            </form>
           </div>
         
         </div>
-        @endforeach
+      @endforeach
     </div>
     @endif
 </div>

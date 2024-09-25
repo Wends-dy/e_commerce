@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('role_name'); // Role name
+            $table->id();
             $table->timestamps();
         });
     }
@@ -23,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('image');
-        });
+        Schema::dropIfExists('roles');
     }
 };
