@@ -20,10 +20,11 @@ class AdminDashboardController extends Controller
         $users = User::with('roles')->get();
         $products = Product::all();
 
-        return view('admin.home', compact('users','products'));
+        return view('admin.user.table', compact('users','products'));
     }
+
     public function create(){
-        return view('admin.control.create');
+        return view('admin.user.create');
     }
 
     public function store(Request $request)
@@ -43,7 +44,7 @@ class AdminDashboardController extends Controller
     
         $user->save();
     
-        return redirect('admin/create')->with('success', 'User created successfully.');
+        return redirect('admin.user.create')->with('success', 'User created successfully.');
     }
 
     public function edit(int $id){
@@ -74,12 +75,12 @@ class AdminDashboardController extends Controller
     public function destroy(int $id)
     {
         // Attempt to find the product by ID
-        $product = Product::findOrFail($id);
+        $user = User::findOrFail($id);
 
         // Delete the product
-        $product->delete();
+        $user->delete();
 
         // Redirect back with a success message
-        return redirect('products')->with('status', 'Product deleted successfully!');
+        return redirect('admin')->with('status', 'Product deleted successfully!');
     }
 }
