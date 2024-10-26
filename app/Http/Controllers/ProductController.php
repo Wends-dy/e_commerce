@@ -1,12 +1,30 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     //
+
+    public function index(){
+        
+        $users = User::with('roles')->get();
+        $products = Product::all();
+        return view('customer.table', compact('users', 'products'));
+        // if (Auth::user()->hasRole('admin')) {
+        //     // If user is admin, return the full view
+        //     return view('products.table', compact('users', 'products'));
+        // } else {
+        //     // If user is not admin, return a limited view or redirect
+        //     return view('products.customer_view', compact('products'));
+        // }
+    }
     public function create(){
         return view('products.create');
     }
@@ -36,7 +54,7 @@ class ProductController extends Controller
     
         $product->save();
     
-        return redirect('products/create')->with('success', 'Product created successfully.');
+        return redirect('admin/product/create')->with('success', 'Product created successfully.');
     }
 
     public function edit(int $id){
@@ -73,7 +91,7 @@ class ProductController extends Controller
         $product->delete();
 
         // Redirect back with a success message
-        return redirect('products')->with('status', 'Product deleted successfully!');
+        return redirect()->back()->with('status', 'Product deleted successfully!');
     }
 
     public function search(Request $request)
@@ -84,6 +102,6 @@ class ProductController extends Controller
             ->orWhere('description', 'LIKE', "%{$query}%")
             ->get();
 
-        return view('products.partials.table-rows', compact('products'))->render();
+        return view('customer.partials.table-rows', compact('products'))->render();
     }
 }

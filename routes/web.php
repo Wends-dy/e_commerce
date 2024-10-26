@@ -1,15 +1,22 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 
-Route::get('/', function(){
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+//Show products
 Route::get('products', [HomeController::class, 'index']);
 Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('products/create', [ProductController::class, 'store']);
@@ -19,15 +26,23 @@ Route::delete('products/{id}/delete', [ProductController::class, 'destroy']);
 Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
 
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('admin', [AdminDashboardController::class, 'index']);
-    Route::get('admin/create', [AdminDashboardController::class, 'create']);
-    Route::post('admin/create', [AdminDashboardController::class, 'store']);
-    Route::get('admin/{id}/edit', [AdminDashboardController::class, 'edit']);
-    Route::put('admin/{id}/edit', [AdminDashboardController::class, 'update']);
-    Route::delete('admin/{id}/delete', [AdminDashboardController::class, 'destroy']);
+// Show the cart
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show'); // Show cart
+Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add'); // Add item to cart
+Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update'); // Update cart item
+Route::post('/cart/remove', [CartController::class, 'removeItem'])->name('cart.remove'); // Remove item from cart
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout'); // Remove item from cart
+
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.index');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+require __DIR__.'/auth.php';
